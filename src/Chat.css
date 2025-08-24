@@ -1,0 +1,38 @@
+.chats {
+  max-width: 800px;
+  overflow-y: scroll;
+  padding: 8rem;
+}
+
+.chats::-webkit-scrollbar {
+  scrollbar-width: none;
+}
+
+.userDiv {
+  display: flex;
+  justify-content: flex-end;
+}
+.gptDiv {
+  text-align: left;
+  font-size: 1.2rem;
+  line-height: 2 !important;
+}
+
+.userMessage {
+  background-color: #323232;
+  padding: 10px 20px;
+  border-radius: 14px;
+  margin-left: 15rem;
+  max-width: 500px;
+  width: fit-content;
+  font-size: 1.1rem;
+}
+
+.hljs {
+  border-radius: 14px !important;
+  line-height: 2 !important;
+}
+
+pre {
+    white-space: pre-wrap;
+}
