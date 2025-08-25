@@ -32,6 +32,7 @@ function Signup() {
                 alert("User already exists! Please login.");
             } else {
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('username', data.username);
                 navigate("/");
             }
         } catch (err) {

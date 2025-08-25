@@ -53,6 +53,7 @@ function ChatWindow() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     window.location.reload();
   }
 
@@ -72,9 +73,9 @@ function ChatWindow() {
       {
         isOpen &&
         <div className="dropDown">
-          <div className="dropDownItem"><i class="fa-solid fa-gear"></i> Settings</div>
+          <div className="dropDownItem"><i className="fa-solid fa-user"></i>Hi, { localStorage.getItem("username")}</div>
           <div className="dropDownItem"><i class="fa-solid fa-cloud-arrow-up"></i> Upgrade plan</div>
-          <div className="dropDownItem" onClick={handleLogout}><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
+          <div className="dropDownItem logout" onClick={handleLogout}><i class="fa-solid fa-arrow-right-from-bracket "></i> Log out</div>
         </div>
       }
 

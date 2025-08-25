@@ -26,10 +26,13 @@ function Login() {
         try {
             const res = await fetch('http://localhost:8080/user/login', options);
             const data = await res.json();
+            console.log(data);
             if (!data.token) {
                 alert("Invalid Credentials");
             } else {
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('username', data.userId);
+
                 navigate("/");
             }
         } catch (err) {

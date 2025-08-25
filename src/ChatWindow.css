@@ -123,3 +123,7 @@ input:focus {
     background-color: rgba(180, 180, 180, 0.1);
     border-radius: 6px;
 }   
+
+.logout:hover{
+    color:rgb(255, 46, 46);
+}
