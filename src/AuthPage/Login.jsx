@@ -24,7 +24,7 @@ function Login() {
         };
 
         try {
-            const res = await fetch('http://localhost:8080/user/login', options);
+            const res = await fetch('https://gpt-backend-ot06.onrender.com/user/login', options);
             const data = await res.json();
             console.log(data);
             if (!data.token) {

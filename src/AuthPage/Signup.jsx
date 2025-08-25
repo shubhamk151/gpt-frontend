@@ -26,7 +26,7 @@ function Signup() {
         };
 
         try {
-            const res = await fetch('http://localhost:8080/user/signup', options);
+            const res = await fetch('https://gpt-backend-ot06.onrender.com/user/signup', options);
             const data = await res.json();
             if (!data.token) {
                 alert("User already exists! Please login.");
