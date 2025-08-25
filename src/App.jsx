@@ -5,6 +5,9 @@ import { MyContext } from "./MyContext.jsx";
 import { useState } from "react";
 import { v1 as uuidv1 } from "uuid";
 
+import React from 'react';
+
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Login from "./AuthPage/Login.jsx";
 import ProtectedRoute from "./AuthPage/ProtectedRoute.jsx";

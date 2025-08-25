@@ -4,6 +4,8 @@ import { MyContext } from "./MyContext";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
+import React from 'react';
+
 
 function Chat() {
   const { newChat, previousChats, reply } = useContext(MyContext);

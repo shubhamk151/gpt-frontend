@@ -3,6 +3,8 @@ import Chat from "./Chat.jsx";
 import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect, use } from "react";
 import { SyncLoader } from "react-spinners";
+import React from 'react';
+
 
 function ChatWindow() {
   const { prompt, setPrompt, reply, setReply, currThreadId, setPreviousChats, setNewChat, previousChats } =
