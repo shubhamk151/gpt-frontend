@@ -8,7 +8,7 @@ function Sidebar() {
 
     const getAllThreads = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/thread", {
+            const response = await fetch("https://gpt-backend-ot06.onrender.com/api/thread", {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("token")
                 }
@@ -39,7 +39,7 @@ function Sidebar() {
         setcurrThreadId(newThreadId);
 
         try {
-            const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`);
+            const response = await fetch(`https://gpt-backend-ot06.onrender.com/api/thread/${newThreadId}`);
             const res = await response.json();
             setPreviousChats(res);
             setNewChat(false);
@@ -52,7 +52,7 @@ function Sidebar() {
 
     const deleteThread = async (threadId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/thread/${threadId}`, { method: "DELETE" });
+            const response = await fetch(`https://gpt-backend-ot06.onrender.com/api/thread/${threadId}`, { method: "DELETE" });
             const res = await response.json();
             console.log(res);
 

@@ -28,7 +28,7 @@ function ChatWindow() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/chat", options);
+      const response = await fetch("https://gpt-backend-ot06.onrender.com/api/chat", options);
       const data = await response.json();
       setReply(data.reply);
     } catch (err) {
