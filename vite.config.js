@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     host: true,
     allowedHosts: [
-      'gpt-frontend-853l.onrender.com', // ← replace with your actual Render domain
+      '.onrender.com', // ← replace with your actual Render domain
     ]
   }
 })
