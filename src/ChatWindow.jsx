@@ -97,7 +97,7 @@ function ChatWindow() {
           </div>
         </div>
         <p className="info">
-          SigmaGPT can make mistakes. Please verify the information provided.
+          TigerGPT can make mistakes. Please verify the information provided.
         </p>
       </div>
     </div>
