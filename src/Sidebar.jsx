@@ -4,8 +4,8 @@ import { useContext, useEffect } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
 
-// const baseURL = "https://gpt-backend-ot06.onrender.com";
-const baseURL = "http://localhost:8080";
+const baseURL = "https://gpt-backend-ot06.onrender.com";
+// const baseURL = "http://localhost:8080";
 
 function Sidebar() {
   const {
@@ -107,6 +107,22 @@ function Sidebar() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
+
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          window.location.href = "/login";
+          return;
+        }
+        if (response.status === 404) {
+          alert("Thread not found or already deleted");
+          return;
+        }
+        alert("Failed to delete thread");
+        return;
+      }
+
       await response.json();
 
       setAllThreads((prev) =>
@@ -117,7 +133,8 @@ function Sidebar() {
         createNewChat();
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      alert("Failed to delete thread. Please try again.");
     }
   };
 
