@@ -2,16 +2,17 @@ import React from 'react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "./Login.css";
+import { SyncLoader } from "react-spinners";
+
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        // Perform login logic here
         const options = {
             method: "POST",
             headers: {
@@ -24,19 +25,20 @@ function Login() {
         };
 
         try {
-            const res = await fetch('https://gpt-backend-ot06.onrender.com/user/login', options);
+            setLoading(true);
+            const res = await fetch('http://localhost:8080/user/login', options);
             const data = await res.json();
-            console.log(data);
             if (!data.token) {
                 alert("Invalid Credentials");
             } else {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('username', data.userId);
-
+                setLoading(false);
                 navigate("/");
             }
         } catch (err) {
             console.error(err);
+            setLoading(false);
         }
 
 
@@ -45,6 +47,7 @@ function Login() {
     return (
         <div className='login-container'>
             <div className="login-card">
+                <SyncLoader color="#09fa46ff" loading={loading} />
                 <h2>Login</h2>
                 <form onSubmit={handleLogin}>
 

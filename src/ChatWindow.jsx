@@ -1,14 +1,23 @@
 import "./ChatWindow.css";
 import Chat from "./Chat.jsx";
 import { MyContext } from "./MyContext.jsx";
-import { useContext, useState, useEffect, use } from "react";
+import { useContext, useState, useEffect } from "react";
 import { SyncLoader } from "react-spinners";
-import React from 'react';
+import React from "react";
 
+// const baseURL = "http://localhost:8080";
+const baseURL = "https://gpt-backend-ot06.onrender.com";
 
 function ChatWindow() {
-  const { prompt, setPrompt, reply, setReply, currThreadId, setPreviousChats, setNewChat, previousChats } =
-    useContext(MyContext);
+  const {
+    prompt,
+    setPrompt,
+    reply,
+    setReply,
+    currThreadId,
+    setPreviousChats,
+    setNewChat,
+  } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,16 +28,15 @@ function ChatWindow() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ` + localStorage.getItem("token"),
+        Authorization: `Bearer ` + localStorage.getItem("token"),
       },
       body: JSON.stringify({
         message: prompt,
         threadId: currThreadId,
       }),
     };
-
     try {
-      const response = await fetch("https://gpt-backend-ot06.onrender.com/api/chat", options);
+      const response = await fetch(`${baseURL}/api/chat`, options);
       const data = await response.json();
       setReply(data.reply);
     } catch (err) {
@@ -37,7 +45,6 @@ function ChatWindow() {
     setLoading(false);
   };
 
-  //appends new chats to previousChats
   useEffect(() => {
     if (prompt && reply) {
       setPreviousChats((prevChats) => [
@@ -51,13 +58,13 @@ function ChatWindow() {
 
   const handleProfileClick = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     window.location.reload();
-  }
+  };
 
   return (
     <div className="chatWindow">
@@ -72,14 +79,20 @@ function ChatWindow() {
         </div>
       </div>
 
-      {
-        isOpen &&
+      {isOpen && (
         <div className="dropDown">
-          <div className="dropDownItem"><i className="fa-solid fa-user"></i>Hi, { localStorage.getItem("username")}</div>
-          <div className="dropDownItem"><i class="fa-solid fa-cloud-arrow-up"></i> Upgrade plan</div>
-          <div className="dropDownItem logout" onClick={handleLogout}><i class="fa-solid fa-arrow-right-from-bracket "></i> Log out</div>
+          <div className="dropDownItem">
+            <i className="fa-solid fa-user"></i>Hi,{" "}
+            {localStorage.getItem("username")}
+          </div>
+          <div className="dropDownItem">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
+          </div>
+          <div className="dropDownItem logout" onClick={handleLogout}>
+            <i class="fa-solid fa-arrow-right-from-bracket "></i> Log out
+          </div>
         </div>
-      }
+      )}
 
       <Chat />
       <SyncLoader color="#09fa46ff" loading={loading} />
@@ -97,7 +110,7 @@ function ChatWindow() {
           </div>
         </div>
         <p className="info">
-          SigmaGPT can make mistakes. Please verify the information provided.
+          TigerGPT can make mistakes. Please verify the information provided.
         </p>
       </div>
     </div>
