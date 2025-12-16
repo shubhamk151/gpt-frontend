@@ -18,7 +18,7 @@ function Chat() {
     }
 
     if (reply === null) {
-      setLatestReply(null); //prevchat load
+      setLatestReply(null); 
       return;
     }
 

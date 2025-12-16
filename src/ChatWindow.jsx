@@ -36,11 +36,27 @@ function ChatWindow() {
       }),
     };
     try {
-      const response = await fetch(`${baseURL}/api/chat`, options);
+      const link = `${baseURL}/api/chat`;
+      const response = await fetch(link, options);
+
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          alert("Session expired. Please login again.");
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          window.location.href = "/login";
+          return;
+        }
+        const error = await response.json();
+        alert(error.error || "Failed to get response");
+        return;
+      }
+
       const data = await response.json();
       setReply(data.reply);
     } catch (err) {
       console.error(err);
+      alert("Network error. Please check your connection.");
     }
     setLoading(false);
   };
@@ -86,10 +102,10 @@ function ChatWindow() {
             {localStorage.getItem("username")}
           </div>
           <div className="dropDownItem">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
+            <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
           </div>
           <div className="dropDownItem logout" onClick={handleLogout}>
-            <i class="fa-solid fa-arrow-right-from-bracket "></i> Log out
+            <i className="fa-solid fa-arrow-right-from-bracket "></i> Log out
           </div>
         </div>
       )}

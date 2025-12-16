@@ -4,8 +4,8 @@ import { useContext, useEffect } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
 
-const baseURL = "https://gpt-backend-ot06.onrender.com";
-// const baseURL = "http://localhost:8080";
+// const baseURL = "https://gpt-backend-ot06.onrender.com";
+const baseURL = "http://localhost:8080";
 
 function Sidebar() {
   const {
@@ -21,11 +21,24 @@ function Sidebar() {
 
   const getAllThreads = async () => {
     try {
-      const response = await fetch(`${baseURL}/api/thread`, {
+      const link = `${baseURL}/api/thread`;
+      const response = await fetch(link, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
+
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          window.location.href = "/login";
+          return;
+        }
+        console.error("Failed to fetch threads");
+        return;
+      }
+
       const res = await response.json();
       const filteredData = res.map((thread) => ({
         threadId: thread.threadId,
@@ -33,7 +46,8 @@ function Sidebar() {
       }));
       setAllThreads(filteredData);
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      alert("Failed to load threads. Please refresh the page.");
     }
   };
 
@@ -53,13 +67,35 @@ function Sidebar() {
     setcurrThreadId(newThreadId);
 
     try {
-      const response = await fetch(`${baseURL}/api/thread/${newThreadId}`);
+      const link = `${baseURL}/api/thread/${newThreadId}`;
+      const response = await fetch(link, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          window.location.href = "/login";
+          return;
+        }
+        if (response.status === 404) {
+          alert("Thread not found or access denied");
+          return;
+        }
+        console.error("Failed to load thread");
+        return;
+      }
+
       const res = await response.json();
       setPreviousChats(res);
       setNewChat(false);
       setReply(null);
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      alert("Failed to load thread. Please try again.");
     }
   };
 
@@ -67,6 +103,9 @@ function Sidebar() {
     try {
       const response = await fetch(`${baseURL}/api/thread/${threadId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
       });
       await response.json();
 
