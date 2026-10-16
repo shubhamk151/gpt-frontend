@@ -1,8 +1,8 @@
 import "./ChatWindow.css";
 import Chat from "./Chat.jsx";
 import { MyContext } from "./MyContext.jsx";
-import { useContext, useState, useEffect } from "react";
-import { SyncLoader } from "react-spinners";
+import { useContext, useState, useEffect, useRef } from "react";
+import { HashLoader } from "react-spinners";
 import React from "react";
 
 // const baseURL = "http://localhost:8080";
@@ -15,11 +15,15 @@ function ChatWindow() {
     reply,
     setReply,
     currThreadId,
+    newChat,
     setPreviousChats,
     setNewChat,
   } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const profileRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const inputRef = useRef(null);
 
   const getReply = async () => {
     setLoading(true);
@@ -72,6 +76,30 @@ function ChatWindow() {
     setPrompt("");
   }, [reply]);
 
+  useEffect(() => {
+    if (newChat) {
+      inputRef.current?.focus();
+    }
+  }, [newChat, currThreadId]);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        isOpen &&
+        !profileRef.current?.contains(event.target) &&
+        !dropdownRef.current?.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isOpen]);
+
   const handleProfileClick = () => {
     setIsOpen(!isOpen);
   };
@@ -88,18 +116,30 @@ function ChatWindow() {
         <span>
           TigerGPT &nbsp; <i className="fa-solid fa-chevron-down"></i>
         </span>
-        <div className="userIconDiv" onClick={handleProfileClick}>
-          <span className="userIcon">
-            <i className="fa-solid fa-user"></i>
-          </span>
+
+        <div
+          ref={profileRef}
+          className="userProfile"
+          onClick={handleProfileClick}
+        >
+          <i className="fa-solid fa-user"></i>
+          <div className="username">
+            <p>
+              {localStorage
+                .getItem("username")
+                ?.split(" ")[0]
+                .replace(/^./, (letter) => letter.toUpperCase())}
+            </p>
+            <p>User</p>
+          </div>
         </div>
       </div>
 
       {isOpen && (
-        <div className="dropDown">
+        <div ref={dropdownRef} className="dropDown">
           <div className="dropDownItem">
-            <i className="fa-solid fa-user"></i>Hi,{" "}
-            {localStorage.getItem("username")}
+            <i className="fa-solid fa-user"></i>
+            {localStorage.getItem("username")?.split(" ")[0]}
           </div>
           <div className="dropDownItem">
             <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
@@ -111,11 +151,12 @@ function ChatWindow() {
       )}
 
       <Chat />
-      <SyncLoader color="#09fa46ff" loading={loading} />
+      <HashLoader color="#22d3ee" size={38} loading={loading} />
 
-      <div className="chatInput">
+      <div className={`chatInput ${newChat ? "new-chat-input" : ""}`}>
         <div className="inputBox">
           <input
+            ref={inputRef}
             placeholder="Ask anything"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}

@@ -5,31 +5,28 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 
-
 function Chat() {
   const { newChat, previousChats, reply } = useContext(MyContext);
   const [latestReply, setLatestReply] = useState(null);
 
   useEffect(() => {
-
     if (reply === null) {
       setLatestReply(null);
       return;
     }
 
     if (reply === null) {
-      setLatestReply(null); 
+      setLatestReply(null);
       return;
     }
 
     if (!previousChats?.length) return;
 
-
     let content;
     if (reply !== undefined) {
-       content = reply.split(" ");
+      content = reply.split(" ");
     } else {
-       content = previousChats[previousChats.length - 1].content.split(" ");
+      content = previousChats[previousChats.length - 1].content.split(" ");
     }
 
     let idx = 0;
@@ -45,7 +42,7 @@ function Chat() {
 
   return (
     <>
-      {newChat && <h1>Start a New Chat!</h1>}
+      {newChat && <h1 style={{ position: "absolute", top: "20%", left: "50%", transform: "translate(-50%, -50%)" }}>Start a New Chat!</h1>}
       <div className="chats">
         {previousChats?.slice(0, -1).map((chat, idx) => (
           <div

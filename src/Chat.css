@@ -1,7 +1,7 @@
 .chats {
   max-width: 800px;
   overflow-y: scroll;
-  padding: 8rem;
+  padding: 2rem 8rem 8rem 8rem;
 }
 
 .chats::-webkit-scrollbar {
@@ -14,18 +14,18 @@
 }
 .gptDiv {
   text-align: left;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 2 !important;
 }
 
 .userMessage {
   background-color: #323232;
   padding: 10px 20px;
-  border-radius: 14px;
+  border-radius: 8px;
   margin-left: 15rem;
   max-width: 500px;
   width: fit-content;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .hljs {

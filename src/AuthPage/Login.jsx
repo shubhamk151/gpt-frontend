@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import { SyncLoader } from "react-spinners";
+import { HashLoader } from "react-spinners";
 
 // const baseURL = "http://localhost:8080";
 const baseURL = "https://gpt-backend-ot06.onrender.com";
@@ -10,6 +10,7 @@ const baseURL = "https://gpt-backend-ot06.onrender.com";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -56,8 +57,16 @@ function Login() {
 
   return (
     <div className="login-container">
+      {loading && (
+        <div className="login-loading-overlay" role="status" aria-live="polite">
+          <div className="login-loading-popup">
+            <HashLoader color="#22d3ee" size={42} />
+            <p>Signing you in...</p>
+          </div>
+        </div>
+      )}
+
       <div className="login-card">
-        <SyncLoader color="#09fa46ff" loading={loading} />
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group">
@@ -72,15 +81,29 @@ function Login() {
 
           <div className="form-group">
             <label>Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={() => setShowPassword((visible) => !visible)}
+              >
+                <i
+                  className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                ></i>
+              </button>
+            </div>
           </div>
 
-          <button type="submit">Login</button>
+          <button className="login-btn" type="submit" disabled={loading}>
+            {loading ? "Signing in..." : "Login"}
+          </button>
         </form>
 
         <p>

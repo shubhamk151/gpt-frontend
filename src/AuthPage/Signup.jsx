@@ -6,15 +6,16 @@ import "./Signup.css";
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   const baseURL = "https://gpt-backend-ot06.onrender.com";
-//   const baseURL = "http://localhost:8080";
+  //   const baseURL = "http://localhost:8080";
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     const options = {
       method: "POST",
       headers: {
@@ -76,12 +77,24 @@ function Signup() {
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={() => setShowPassword((visible) => !visible)}
+              >
+                <i
+                  className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                ></i>
+              </button>
+            </div>
           </div>
           <button className="signup-btn" type="submit">
             SignUP
